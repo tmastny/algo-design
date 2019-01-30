@@ -13,11 +13,11 @@ class Node:
 
 class Tree:
     def __init__(self, data=None):
-        self.head = None
+        self.head = Node()
 
     def insert(self, data):
-        if self.head == None:
-            self.head = Tree(data)
+        if self.head.data == None:
+            self.head.data = data
             return()
 
         if self.head.data > data:
@@ -68,17 +68,26 @@ class Tree:
                 self.head.left.kth_smallest(k)
             )
 
-    def traverse(self):
+    def traverse(self, print_nodes=True, array = None):
         if self.head is not None:
             left = self.head.left
             if left is not None:
-                self.head.left.traverse()
+                self.head.left.traverse(print_nodes=print_nodes, array=array)
 
-            print(self.head.data)
+            if array is not None:
+                array.append(self.head.data)
+
+            if print_nodes:
+                print(self.head.data)
 
             right = self.head.right
             if right is not None:
-                self.head.right.traverse()
+                self.head.right.traverse(print_nodes=print_nodes, array=array)
+
+    def length(self):
+        a = []
+        self.traverse(print_nodes=False, array = a)
+        return(len(a))
 
 
 if __name__ == '__main__':

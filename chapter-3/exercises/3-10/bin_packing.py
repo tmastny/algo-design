@@ -2,8 +2,6 @@
 import random
 import sys
 
-sys.path.append('../3-8')
-
 from index_search import Tree
 
 class Bins(Tree):
@@ -11,8 +9,9 @@ class Bins(Tree):
         super().__init__(weight)
 
     def best_fit(self, weight):
-        if self.head == None:
-            self.head = Bins(weight)
+        if self.head.data == None:
+            self.head.data = weight
+            return()
 
         this_bin_capacity = weight + self.head.data
         if this_bin_capacity > 1:
@@ -22,26 +21,29 @@ class Bins(Tree):
             return(self.head.left.best_fit(weight))
 
         if self.head.right == None:
+            self.head.data = this_bin_capacity
             return()
 
         next_bin_capacity = weight + self.head.right.data
 
         if next_bin_capacity > 1:
+            self.head.data = this_bin_capacity
             return()
 
         if next_bin_capacity > this_bin_capacity:
             return(self.head.right.best_fit(weight))
 
-    def length(self):
-        return(
-            self.head.n_left + self.head.n_right + 1
-        )
+    def worst_fit(self, weight):
+        return()
 
-def pack_bins(weights, best_fit = True):
+
+def pack_bins(weights, best_fit=True):
     bins = Bins()
 
     if best_fit:
         method = bins.best_fit
+    else:
+        method = bins.worst_fit
 
     for weight in weights:
         method(weight)
@@ -54,6 +56,7 @@ if __name__ == '__main__':
 
     print(' '.join(["{0:0.2f}".format(i) for i in weights]))
 
-    pack_bins(weights)
+    print(pack_bins(weights))
+    print(pack_bins(weights))
 
-    print()
+    print(sum(weights))
