@@ -1,0 +1,26 @@
+#include<stdio.h>
+
+
+insertion_sort(item s[], int n) {
+      int i,j;                /* counters */
+      for (i=1; i<n; i++) {
+            j=i;
+            while ((j>0) && (s[j] < s[j-1])) {
+                  swap(&s[j],&s[j-1]);
+                  j = j-1;
+            }
+      }
+}
+
+
+int main() {
+      long p,q,r;
+
+      while (scanf("%ld %ld",&p,&q)
+		!=EOF) {
+ 	if (q>p) r=q-p;
+        else r=p-q;
+
+        printf("%ld\n",r);
+      }
+}
