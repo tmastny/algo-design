@@ -98,7 +98,7 @@ def naive_best_fit(weights, best_fit=True):
     return(len(bins))
 
 
-def pack_mean(best_fit=True, naive=False, no_method=False):
+def pack_mean(samples, best_fit=True, naive=False, no_method=False):
     method = pack_bins
     if naive:
         method = naive_best_fit
@@ -107,9 +107,9 @@ def pack_mean(best_fit=True, naive=False, no_method=False):
         method = lambda x, y: sum(x)
 
     number_of_bins = []
-    for i in range(0, 100):
+    for i in range(0, samples):
         number_of_bins.append(
-            method([random.random() for i in range(0, 100)], best_fit)
+            method([random.random() for i in range(0, samples)], best_fit)
         )
 
     return(sum(number_of_bins) / len(number_of_bins))
@@ -129,7 +129,9 @@ if __name__ == "__main__":
     print()
     print()
 
-    print('Average tree best fit: {}'.format(pack_mean()))
-    print('Average array best fit: {}'.format(pack_mean(True, True)))
-    print('Average tree worst fit: {}'.format(pack_mean(False)))
-    print('Lower bound: {}'.format(pack_mean(True, True, True)))
+    for samples in [100, 1000]:
+        print('Average tree best fit: {}'.format(pack_mean(samples)))
+        print('Average array best fit: {}'.format(pack_mean(samples, True, True)))
+        print('Average tree worst fit: {}'.format(pack_mean(samples, False)))
+        print('Lower bound: {}'.format(pack_mean(samples, True, True, True)))
+        print()
