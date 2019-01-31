@@ -62,8 +62,6 @@ class Bin(TreeNode):
             return(smaller_bin.find_best_fit(weight))
 
 
-        return(self.put(weight, True))
-
 def pack_bins(weights, best_fit=True):
     bins = Bins()
 
