@@ -1,0 +1,6 @@
+pre
+F B A D C E G I H
+in
+A B C D E F G H I
+post
+A C E D B H I G F
