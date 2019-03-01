@@ -15,48 +15,31 @@
 #include <algorithm>
 #include <utility>
 #include <cmath>
+#include <set>
 
 using namespace std;
 
-
+void print_graph()
 
 int main() {
+  map<string, set<string>> graph;
+  int nodes;
+  cin >> nodes;
 
-  int cases;
-  cin >> cases;
+  for (int i = 0; i < nodes; i++) {
+    string node;
+    cin >> node;
 
-  vector<tuple<int, int, int>> tasks;
-  vector<int> jobs;
-  for (int i = 0; i < cases; i++) {
-    string empty_line;
-    getline(cin, empty_line);
+    string line;
+    getline(cin, line);
+    istringstream iss(line);
 
-    tasks.clear();
-    jobs.clear();
-
-    int tasks_number;
-    cin >> tasks_number;
-    for (int j = 0; j < tasks_number; j++) {
-      int time;
-      int fine;
-      cin >> time >> fine;
-
-      tasks.push_back(make_tuple(j + 1, time, fine));
+    string adj;
+    set<string> adj_nodes;
+    while (iss >> adj) {
+      adj_nodes.insert(adj);
     }
-    //cout << endl;
-    //cout << "Task: " << i << " " << tasks_number << endl;
 
-    //int best_min = min_job_cost(tasks, false);
-    //cout << "Min cost: " << best_min << endl;
-
-    stable_sort(tasks.begin(), tasks.end(), job_compare);
-    //cout << "Found cost: " << job_cost(tasks) << endl;
-
-    //print_job_tuple(tasks);
-    print_job_order(tasks);
-
-    if (i < cases - 1) {
-      cout << endl;
-    }
+    graph.insert(make_pair(node, adj_nodes));
   }
 }

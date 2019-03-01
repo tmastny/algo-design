@@ -1,3 +1,17 @@
+9
+F
+B G
+B
+A D
+A
+
+D
+C E
+G
+I
+I
+H
+
 pre
 F B A D C E G I H
 in
