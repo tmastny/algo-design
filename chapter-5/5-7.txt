@@ -4,14 +4,19 @@ B G
 B
 A D
 A
-
+NULL
 D
 C E
+C
+NULL
+E
+NULL
 G
 I
 I
 H
-
+H
+NULL
 pre
 F B A D C E G I H
 in
