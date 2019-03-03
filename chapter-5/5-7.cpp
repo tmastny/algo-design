@@ -45,30 +45,36 @@ class Graph {
     }
 };
 
+void print_vec(vector<string> v) {
+  cout << "vec: ";
+  for (auto el : v) {
+    cout << el << " ";
+  }
+  cout << endl;
+}
+
 string recurse_tree(
   Graph& g,
-  vector<string>::iterator ibeg,
-  vector<string>::iterator iend,
-  vector<string>::iterator root
+  vector<string> children,
+  vector<string>::iterator root,
+  int counter
 ) {
-
-  if (distance(ibeg, iend) <= 0) {
+  if (children.size() == 1) {
+    return children[0];
+  } else if (children.size() == 0) {
     return "";
   }
-
   string child;
 
-  auto in_node = find(ibeg, iend, *root);
+  auto node = find(children.begin(), children.end(), *root);
+  cout << "nod: " << *node << endl << endl;
+  print_vec(vector<string> (children.begin(), node));
 
-  child = recurse_tree(g, ibeg, in_node, root + 1);
-  if (child != "") {
-    g[*root].insert(child);
-  }
+  child = recurse_tree(g, vector<string> (children.begin(), node), root + 1, counter + 1);
+  if (child != "") g[*root].insert(child);
 
-  child = recurse_tree(g, in_node, iend, root + 1);
-  if (child != "") {
-    g[*root].insert(child);
-  }
+  child = recurse_tree(g, vector<string> (node + 1, children.end()), root + 1, counter + 1);
+  if (child != "") g[*root].insert(child);
 
   return *root;
 }
@@ -83,7 +89,7 @@ Graph build_tree(map<string, vector<string>>& orders) {
     g[i] = init;
   }
 
-  recurse_tree(g, in.begin(), in.end(), pre.begin());
+  recurse_tree(g, in, pre.begin(), 1);
 
   return g;
 }
@@ -112,7 +118,7 @@ int main() {
 
     graph[node] = adj_nodes;
   }
-  graph.print_set();
+  //graph.print_set();
 
   map<string, vector<string>> orders;
   for (int i = 0; i < 3; i++) {
