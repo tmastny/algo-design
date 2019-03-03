@@ -59,6 +59,10 @@ string recurse_tree(
   vector<string>::iterator root,
   int counter
 ) {
+  string iloc = "F";
+  if (g[iloc].size() > 0) {
+    cout << "here" << endl;
+  }
   if (children.size() == 1) {
     return children[0];
   } else if (children.size() == 0) {
@@ -67,15 +71,15 @@ string recurse_tree(
   string child;
 
   auto node = find(children.begin(), children.end(), *root);
-  cout << "nod: " << *node << endl << endl;
-  print_vec(vector<string> (children.begin(), node));
 
   child = recurse_tree(g, vector<string> (children.begin(), node), root + 1, counter + 1);
   if (child != "") g[*root].insert(child);
 
-  child = recurse_tree(g, vector<string> (node + 1, children.end()), root + 1, counter + 1);
+  child = recurse_tree(g, vector<string> (node + 1, children.end()), root + 2, counter + 1);
   if (child != "") g[*root].insert(child);
 
+  g.print_set();
+  cout << endl;
   return *root;
 }
 
