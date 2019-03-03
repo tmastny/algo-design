@@ -56,36 +56,35 @@ void print_vec(vector<string> v) {
 string recurse_tree(
   Graph& g,
   vector<string> children,
-  vector<string>::iterator root,
-  int counter
+  deque<string>& pre
 ) {
-  string iloc = "F";
-  if (g[iloc].size() > 0) {
-    cout << "here" << endl;
-  }
-  if (children.size() == 1) {
-    return children[0];
-  } else if (children.size() == 0) {
+
+  if (children.size() == 0) {
     return "";
   }
+
   string child;
+  string root = pre[0];
+  pre.pop_front();
 
-  auto node = find(children.begin(), children.end(), *root);
+  if (children.size() == 1) {
+    return children[0];
+  }
 
-  child = recurse_tree(g, vector<string> (children.begin(), node), root + 1, counter + 1);
-  if (child != "") g[*root].insert(child);
+  auto node = find(children.begin(), children.end(), root);
 
-  child = recurse_tree(g, vector<string> (node + 1, children.end()), root + 2, counter + 1);
-  if (child != "") g[*root].insert(child);
+  child = recurse_tree(g, vector<string> (children.begin(), node), pre);
+  if (child != "") g[root].insert(child);
 
-  g.print_set();
-  cout << endl;
-  return *root;
+  child = recurse_tree(g, vector<string> (node + 1, children.end()), pre);
+  if (child != "") g[root].insert(child);
+
+  return root;
 }
 
 Graph build_tree(map<string, vector<string>>& orders) {
   Graph g;
-  vector<string> pre = orders["pre"];
+  deque<string> pre(orders["pre"].begin(), orders["pre"].end());
   vector<string> in = orders["in"];
 
   for (auto i : pre) {
@@ -93,8 +92,7 @@ Graph build_tree(map<string, vector<string>>& orders) {
     g[i] = init;
   }
 
-  recurse_tree(g, in, pre.begin(), 1);
-
+  recurse_tree(g, in, pre);
   return g;
 }
 
@@ -122,7 +120,6 @@ int main() {
 
     graph[node] = adj_nodes;
   }
-  //graph.print_set();
 
   map<string, vector<string>> orders;
   for (int i = 0; i < 3; i++) {
@@ -143,5 +140,9 @@ int main() {
   }
 
   Graph g = build_tree(orders);
-  g.print_set();
+  if (g.g == graph.g) {
+    cout << "Graph rebuild successful" << endl;
+  } else {
+    g.print_set();
+  }
 }
