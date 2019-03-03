@@ -45,32 +45,47 @@ class Graph {
     }
 };
 
-Graph build_tree(map<string, deque<string>>& orders) {
+string recurse_tree(
+  Graph& g,
+  vector<string>::iterator ibeg,
+  vector<string>::iterator iend,
+  vector<string>::iterator root
+) {
+
+  if (distance(ibeg, iend) <= 0) {
+    return "";
+  }
+
+  string child;
+
+  auto in_node = find(ibeg, iend, *root);
+
+  child = recurse_tree(g, ibeg, in_node, root + 1);
+  if (child != "") {
+    g[*root].insert(child);
+  }
+
+  child = recurse_tree(g, in_node, iend, root + 1);
+  if (child != "") {
+    g[*root].insert(child);
+  }
+
+  return *root;
+}
+
+Graph build_tree(map<string, vector<string>>& orders) {
   Graph g;
-  deque<string> pre = orders["pre"];
-  deque<string> in = orders["in"];
+  vector<string> pre = orders["pre"];
+  vector<string> in = orders["in"];
 
   for (auto i : pre) {
     set<string> init;
     g[i] = init;
   }
 
-  int i = 0;
-  int j = 0;
-  while (pre[i] != in[j]) {
-    i++;
-  }
+  recurse_tree(g, in.begin(), in.end(), pre.begin());
 
-  for (int i = 0; i < pre.size(); i++) {
-    if (i < pre.size() - 1) {
-      g[pre[i]].insert(pre[i + 1]);
-    }
-    for (int j = 0; j < in.size(); j++) {
-      if (pre[i] == in[j]) {
-
-      }
-    }
-  }
+  return g;
 }
 
 int main() {
@@ -99,7 +114,7 @@ int main() {
   }
   graph.print_set();
 
-  map<string, deque<string>> orders;
+  map<string, vector<string>> orders;
   for (int i = 0; i < 3; i++) {
     string order_type;
     cin >> order_type >> ws;
@@ -109,11 +124,14 @@ int main() {
     istringstream iss(line);
 
     string node;
-    deque<string> nodes;
+    vector<string> nodes;
     while (iss >> node) {
       nodes.push_back(node);
     }
 
     orders[order_type] = nodes;
   }
+
+  Graph g = build_tree(orders);
+  g.print_set();
 }

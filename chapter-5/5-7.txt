@@ -18,8 +18,8 @@ H
 H
 NULL
 pre
-F B A D C E G I H
+F B
 in
-A B C D E F G H I
+B F
 post
 A C E D B H I G F
