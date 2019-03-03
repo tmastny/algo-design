@@ -1,8 +1,31 @@
 /*
   [4] Given pre-order and in-order traversals of a binary tree,
-  is it possible to recon- struct the tree? If so, sketch an
+  is it possible to reconstruct the tree? If so, sketch an
   algorithm to do it. If not, give a counterexample. Repeat the
   problem if you are given the pre-order and post-order traversals.
+*/
+
+/*
+Counter Example:
+    A
+  B   C
+D
+pre
+A B D C
+post
+D B C A
+in
+D B A C
+
+     A
+  B     C
+    D
+pre
+A B D C
+post
+D B C A
+in
+B D A C
 */
 
 #include <vector>
